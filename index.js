@@ -1,18 +1,8 @@
 require('dotenv').config();
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const Discord = require('discord.js');
-const { createPrivateKey } = require('crypto');
-const { log } = require('console');
-
-var privKey = fs.readFileSync('./server.key', 'utf8');
-var certif = fs.readFileSync('./server.cert', 'utf8');
-
-var credentials = {key: privKey, cert: certif}
 
 const client = new Discord.Client();
 
@@ -79,14 +69,8 @@ router.get('/', (req, res) => {
 
 app.use('/', router);
 
-var httpsServer = https.createServer(credentials, app);
-var httpServer = http.createServer(app);
-
-httpsServer.listen(9001, () => {
+app.listen(9001, () => {
     console.log('Running on port 9001');
-})
-httpServer.listen(9000, () => {
-    console.log('HTTP Running on 9000');
 })
 
 client.login(process.env.BOT_TOKEN)
